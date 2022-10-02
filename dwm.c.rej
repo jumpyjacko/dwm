@@ -1,45 +1,44 @@
 --- dwm.c
 +++ dwm.c
-@@ -1797,26 +1921,32 @@ tagmon(const Arg *arg)
- void
- tile(Monitor *m)
- {
--	unsigned int i, n, h, mw, my, ty;
-+	unsigned int i, n, h, r, oe = enablegaps, ie = enablegaps, mw, my, ty;
- 	Client *c;
+@@ -211,13 +233,16 @@ static void pop(Client *);
+ static void propertynotify(XEvent *e);
+ static void quit(const Arg *arg);
+ static Monitor *recttomon(int x, int y, int w, int h);
++static void removesystrayicon(Client *i);
+ static void resize(Client *c, int x, int y, int w, int h, int interact);
++static void resizebarwin(Monitor *m);
+ static void resizeclient(Client *c, int x, int y, int w, int h);
+ static void resizemouse(const Arg *arg);
++static void resizerequest(XEvent *e);
+ static void restack(Monitor *m);
+ static void run(void);
+ static void scan(void);
+-static int sendevent(Client *c, Atom proto);
++static int sendevent(Window w, Atom proto, int m, long d0, long d1, long d2, long d3, long d4);
+ static void sendmon(Client *c, Monitor *m);
+ static void setclientstate(Client *c, long state);
+ static void setfocus(Client *c);
+@@ -247,18 +273,23 @@ static int updategeom(void);
+ static void updatenumlockmask(void);
+ static void updatesizehints(Client *c);
+ static void updatestatus(void);
++static void updatesystray(void);
++static void updatesystrayicongeom(Client *i, int w, int h);
++static void updatesystrayiconstate(Client *i, XPropertyEvent *ev);
+ static void updatetitle(Client *c);
+ static void updatewindowtype(Client *c);
+ static void updatewmhints(Client *c);
+ static void view(const Arg *arg);
+ static Client *wintoclient(Window w);
+ static Monitor *wintomon(Window w);
++static Client *wintosystrayicon(Window w);
+ static int xerror(Display *dpy, XErrorEvent *ee);
+ static int xerrordummy(Display *dpy, XErrorEvent *ee);
+ static int xerrorstart(Display *dpy, XErrorEvent *ee);
+ static void zoom(const Arg *arg);
  
- 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
- 	if (n == 0)
- 		return;
- 
-+	if (smartgaps == n) {
-+		oe = 0; // outer gaps disabled
-+	}
-+
- 	if (n > m->nmaster)
--		mw = m->nmaster ? m->ww * m->mfact : 0;
-+		mw = m->nmaster ? (m->ww + m->gappiv*ie) * m->mfact : 0;
- 	else
--		mw = m->ww;
--	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
-+		mw = m->ww - 2*m->gappov*oe + m->gappiv*ie;
-+	for (i = 0, my = ty = m->gappoh*oe, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
- 		if (i < m->nmaster) {
--			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
--			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
--			my += HEIGHT(c);
-+			r = MIN(n, m->nmaster) - i;
-+			h = (m->wh - my - m->gappoh*oe - m->gappih*ie * (r - 1)) / r;
-+			resize(c, m->wx + m->gappov*oe, m->wy + my, mw - (2*c->bw) - m->gappiv*ie, h - (2*c->bw), 0);
-+			my += HEIGHT(c) + m->gappih*ie;
- 		} else {
--			h = (m->wh - ty) / (n - i);
--			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
--			ty += HEIGHT(c);
-+			r = n - i;
-+			h = (m->wh - ty - m->gappoh*oe - m->gappih*ie * (r - 1)) / r;
-+			resize(c, m->wx + mw + m->gappov*oe, m->wy + ty, m->ww - mw - (2*c->bw) - 2*m->gappov*oe, h - (2*c->bw), 0);
-+			ty += HEIGHT(c) + m->gappih*ie;
- 		}
- }
- 
+ /* variables */
++static Systray *systray = NULL;
+ static const char broken[] = "broken";
+ static char stext[256];
+ static int screen;

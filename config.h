@@ -3,6 +3,11 @@
 /* appearance */
 static const unsigned int borderpx  = 4;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+static const unsigned int systrayonleft  = 0;  	/* 0: systray in the right corner, >0: systray on left of status text */
+static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
+static const int showsystray        = 1;        /* 0 means no systray */
 static const int rmaster            = 0;        /* 1 means master-area is initially on the right */
 static const unsigned int gappih    = 4;        /* horiz inner gap between windows */
 static const unsigned int gappiv    = 4;        /* vert inner gap between windows */
@@ -76,6 +81,7 @@ static const char *termcmd[]     = { "kitty", NULL };
 static const char *lightdown[]   = { "light", "-U", "1" };
 static const char *lightup[]     = { "light", "-A", "1" };
 static const char *hotkeyshelp[] = { "kitty", "--class", "TermMemo", "-T", "hotkeys", "-o", "font_size=12", "/home/jackson/shell_scripts/dwm_hotkeys" };
+// static const char *screenshot[]  = { "maim",  "-b", "2", "-usD", "/home/jackson/Images/`date +%d_%m_%Y_%H-%M-%S).png" };
 
 #include "movestack.c"
 static Key keys[] = {
@@ -85,6 +91,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F2,     spawn,          {.v = lightdown   } },
 	{ MODKEY,                       XK_F3,     spawn,          {.v = lightup     } },
 	{ MODKEY|ControlMask,           XK_h,      spawn,          {.v = hotkeyshelp } },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          SHCMD("maim -b 2 -usD /home/jackson/Images/$(date +%d_%m_%Y_%H-%M-%S).png") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_n,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_e,      focusstack,     {.i = -1 } },
@@ -135,8 +142,8 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
+	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },

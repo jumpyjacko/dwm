@@ -76,6 +76,7 @@ static const char *termcmd[]     = { "kitty", NULL };
 static const char *lightdown[]   = { "light", "-U", "1" };
 static const char *lightup[]     = { "light", "-A", "1" };
 static const char *hotkeyshelp[] = { "kitty", "--class", "TermMemo", "-T", "hotkeys", "-o", "font_size=12", "/home/jackson/shell_scripts/dwm_hotkeys" };
+// static const char *screenshot[]  = { "maim",  "-b", "2", "-usD", "/home/jackson/Images/`date +%d_%m_%Y_%H-%M-%S).png" };
 
 #include "movestack.c"
 static Key keys[] = {
@@ -85,6 +86,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F2,     spawn,          {.v = lightdown   } },
 	{ MODKEY,                       XK_F3,     spawn,          {.v = lightup     } },
 	{ MODKEY|ControlMask,           XK_h,      spawn,          {.v = hotkeyshelp } },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          SHCMD("maim -b 2 -usD /home/jackson/Images/$(date +%d_%m_%Y_%H-%M-%S).png") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_n,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_e,      focusstack,     {.i = -1 } },

@@ -18,11 +18,11 @@ static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#919191";
+static const char col_lightgray[]   = "#919191";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeSel]  = { col_gray4, col_lightgray,  col_lightgray },
 };
 
 /* tagging */
@@ -71,10 +71,10 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]    = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[]    = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_lightgray, "-sf", col_gray4, NULL };
 static const char *termcmd[]     = { "kitty", NULL };
-static const char *lightdown[]   = { "light", "-U", "1" };
-static const char *lightup[]     = { "light", "-A", "1" };
+// static const char *lightdown[]   = { "light", "-U", "1" };
+// static const char *lightup[]     = { "light", "-A", "1" };
 static const char *hotkeyshelp[] = { "kitty", "--class", "TermMemo", "-T", "hotkeys", "-o", "font_size=12", "/home/jackson/shell_scripts/dwm_hotkeys" };
 // static const char *screenshot[]  = { "maim",  "-b", "2", "-usD", "/home/jackson/Images/`date +%d_%m_%Y_%H-%M-%S).png" };
 
@@ -83,8 +83,10 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd    } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd     } },
-	{ MODKEY,                       XK_F2,     spawn,          {.v = lightdown   } },
-	{ MODKEY,                       XK_F3,     spawn,          {.v = lightup     } },
+	{ MODKEY,                       XK_F2,     spawn,          SHCMD("light -U 1 && echo \"Brightness\" | dnote -id \"Brightness\" -pbar $(light -G) 1.00") },
+	{ MODKEY,                       XK_F3,     spawn,          SHCMD("light -A 1 && echo \"Brightness\" | dnote -id \"Brightness\" -pbar $(light -G) 1.00") },
+	{ MODKEY,                       XK_F4,     spawn,          SHCMD("pamixer -d 1 && echo \"Volume\" | dnote -id \"Volume\" -pbar $(pamixer --get-volume) 100") },
+	{ MODKEY,                       XK_F5,     spawn,          SHCMD("pamixer -i 1 && echo \"Volume\" | dnote -id \"Volume\" -pbar $(pamixer --get-volume) 100") },
 	{ MODKEY|ControlMask,           XK_h,      spawn,          {.v = hotkeyshelp } },
 	{ MODKEY|ShiftMask,             XK_s,      spawn,          SHCMD("maim -b 2 -usD /home/jackson/Images/$(date +%d_%m_%Y_%H-%M-%S).png") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },

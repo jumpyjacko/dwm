@@ -86,6 +86,7 @@ static const char *dmenucmd[] = {"dmenu_run", "-m",  dmenumon,      "-fn",
 static const char *termcmd[] = {"kitty", NULL};
 // static const char *lightdown[]   = { "light", "-U", "1" };
 // static const char *lightup[]     = { "light", "-A", "1" };
+static const char *slockcmd[] = {"slock", NULL};
 static const char *hotkeyshelp[] = {
     "kitty",        "--class",
     "TermMemo",     "-T",
@@ -99,18 +100,18 @@ static Key keys[] = {
     /* modifier                     key        function        argument */
     {MODKEY, XK_space, spawn, {.v = dmenucmd}},
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
-    {MODKEY, XK_F2, spawn,
-     SHCMD("light -U 1 && echo \"\" | dnote -id \"Brightness\" -pbar "
-           "$(light -G) 1.00")},
-    {MODKEY, XK_F3, spawn,
-     SHCMD("light -A 1 && echo \"\" | dnote -id \"Brightness\" -pbar "
-           "$(light -G) 1.00")},
-    {MODKEY, XK_F4, spawn,
-     SHCMD("pamixer -d 1 && echo \"\" | dnote -id \"Volume\" -pbar "
-           "$(pamixer --get-volume) 100")},
-    {MODKEY, XK_F5, spawn,
-     SHCMD("pamixer -i 1 && echo \"\" | dnote -id \"Volume\" -pbar "
-           "$(pamixer --get-volume) 100")},
+    // {MODKEY, XK_F2, spawn,
+    //  SHCMD("light -U 1 && echo \"\" | dnote -id \"Brightness\" -pbar "
+    //        "$(light -G) 1.00")},
+    // {MODKEY, XK_F3, spawn,
+    //  SHCMD("light -A 1 && echo \"\" | dnote -id \"Brightness\" -pbar "
+    //        "$(light -G) 1.00")},
+    // {MODKEY, XK_F4, spawn,
+    //  SHCMD("pamixer -d 1 && echo \"\" | dnote -id \"Volume\" -pbar "
+    //        "$(pamixer --get-volume) 100")},
+    // {MODKEY, XK_F5, spawn,
+    //  SHCMD("pamixer -i 1 && echo \"\" | dnote -id \"Volume\" -pbar "
+    //        "$(pamixer --get-volume) 100")},
     {MODKEY | ControlMask, XK_h, spawn, {.v = hotkeyshelp}},
     {MODKEY | ShiftMask, XK_s, spawn,
      SHCMD(
@@ -153,6 +154,7 @@ static Key keys[] = {
     {MODKEY, XK_period, focusmon, {.i = +1}},
     {MODKEY | ShiftMask, XK_comma, tagmon, {.i = -1}},
     {MODKEY | ShiftMask, XK_period, tagmon, {.i = +1}},
+    {MODKEY, XK_l, spawn, {.v = slockcmd}},
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4){MODKEY | ShiftMask, XK_q, quit, {0}},
 };

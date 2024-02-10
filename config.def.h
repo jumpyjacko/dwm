@@ -39,7 +39,7 @@ static const Rule rules[] = {
      */
     /* class      instance    title       tags mask     isfloating   monitor
        float x,y,w,h         floatborderpx*/
-    {"Gimp", NULL, NULL, 0, 1, -1, 50, 50, 500, 500, 4},
+    // {"Gimp", NULL, NULL, 0, 1, -1, 50, 50, 500, 500, 4},
     {"Firefox", NULL, NULL, 1 << 8, 0, -1, 50, 50, 500, 500, 4},
     {"TermMemo", NULL, NULL, 0, 1, -1, 50, 50, 1412, 664, 4},
 };
@@ -95,9 +95,6 @@ static const char *termcmd[] = {"kitty", NULL};
 // static const char *lightdown[]   = { "light", "-U", "1" };
 // static const char *lightup[]     = { "light", "-A", "1" };
 static const char *slockcmd[] = {"slock", NULL};
-static const char *hotkeyshelp[] = {
-    "kitty",   "--class", "TermMemo",     "-T",
-    "hotkeys", "-o",      "font_size=12", "~/shell_scripts/dwm_hotkeys"};
 
 #include "movestack.c"
 static Key keys[] = {
@@ -108,9 +105,9 @@ static Key keys[] = {
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
     // {MODKEY, XK_F2, spawn, SHCMD("light -U 1")},
     // {MODKEY, XK_F3, spawn, SHCMD("light -A 1")},
-    {MODKEY, XK_F4, spawn, SHCMD("pamixer -d 1")},
-    {MODKEY, XK_F5, spawn, SHCMD("pamixer -i 1")},
-    {MODKEY | ControlMask, XK_h, spawn, {.v = hotkeyshelp}},
+    {MODKEY, XK_F8, spawn, SHCMD("cd ~/shell_scripts && ./change_volume up")},
+    {MODKEY, XK_F7, spawn, SHCMD("cd ~/shell_scripts && ./change_volume down")},
+    {MODKEY | ControlMask, XK_h, spawn, SHCMD("kitty --class TermMemo -T hotkeys -o font_size=12 'cd ~/shell_scripts/ && ./dwm_hotkeys'")},
     {MODKEY | ShiftMask, XK_s, spawn,
      SHCMD(
          "maim -b 2 -usD /home/jackson/Images/$(date +%d_%m_%Y_%H-%M-%S).png")},

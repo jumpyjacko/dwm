@@ -111,7 +111,7 @@ static Key keys[] = {
     {MODKEY | ControlMask, XK_h, spawn, SHCMD("kitty --class TermMemo -T hotkeys -o font_size=12 'cd ~/shell_scripts/ && ./dwm_hotkeys'")},
     {MODKEY | ShiftMask, XK_s, spawn,
      SHCMD(
-         "maim -b 2 -usD /home/jackson/Images/$(date +%d_%m_%Y_%H-%M-%S).png")},
+         "maim -b 2 -usD /home/jackson/Pictures/$(date +%d_%m_%Y_%H-%M-%S).png")},
     {MODKEY, XK_b, togglebar, {0}},
     {MODKEY, XK_n, focusstack, {.i = +1}},
     {MODKEY, XK_e, focusstack, {.i = -1}},

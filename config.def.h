@@ -108,6 +108,9 @@ static Key keys[] = {
     {MODKEY, XK_F6, spawn, SHCMD("cd ~/shell_scripts && ./change_volume mute")},
     {MODKEY, XK_F7, spawn, SHCMD("cd ~/shell_scripts && ./change_volume down")},
     {MODKEY, XK_F8, spawn, SHCMD("cd ~/shell_scripts && ./change_volume up")},
+    {MODKEY, XK_F9, spawn, SHCMD("mpc prev")},
+    {MODKEY, XK_F10, spawn, SHCMD("mpc toggle")},
+    {MODKEY, XK_F11, spawn, SHCMD("mpc next")},
     {MODKEY | ControlMask, XK_h, spawn, SHCMD("kitty --class TermMemo -T hotkeys -o font_size=12 'cd ~/shell_scripts/ && ./dwm_hotkeys'")},
     {MODKEY | ShiftMask, XK_s, spawn,
      SHCMD(
